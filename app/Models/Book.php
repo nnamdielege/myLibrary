@@ -9,13 +9,18 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
-        'title',
-        'author',
-    ];
+    protected $guarded = [];
 
     public function path()
     {
         return '/books/' . $this->id;
+    }
+
+    public function setAuthorIdAttribute($author)
+    {
+        $author = Author::firstOrCreate([
+            'name' => $author,
+        ]);
+        $this->attributes['author_id'] = $author->id;
     }
 }
